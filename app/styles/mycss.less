@@ -1,0 +1,136 @@
+@main-color: #E91E63;
+@title-color: #949494;
+@subtitle-color: #FFFFFF;
+@type-grass: #97D077;
+@type-bug: #67AB9F;
+@type-poison: #A341A3;
+@secundary-color: #949494;
+@widthcol: 320px;
+@item-background1: #f4f4f4;
+@item-background2: #ededed;
+@nothing: #000000;
+
+@font-face {
+    font-family: Helvetica;
+    src: asset-url('/font/Helvetica.otf') format('opentype');
+}
+
+
+.mainbar{
+    background-color: @main-color;
+}
+.navbar{
+    margin-bottom: 5px;
+
+}
+.secundary{
+    padding: 15px 0px 0px 0px;
+    text-align:left;
+    background-color: @secundary-color;
+    height: 50px;
+}
+.typegrass, .typebug,.typepoison{
+    text-align: center;
+    width:60px;
+}
+.typegrass{
+    color: @subtitle-color;
+    background-color: @type-grass;
+}
+.typebug{
+    color: @subtitle-color;
+    background-color: @type-bug;
+
+}
+.typepoison{
+    color: @subtitle-color;
+    background-color:@type-poison;
+}
+.description{
+    color: @title-color;
+    margin-bottom: 0px;
+}
+.evolutionName{
+    float: right;
+
+}
+/* centered columns styles */
+.row-centered {
+    text-align:center;
+}
+.col-centered {
+    display:inline-block;
+    float:none;
+    /* reset the text-align */
+    text-align:left;
+    /* inline-block space fix */
+    margin-right:-4px;
+}
+.col-fixed {
+    /* custom width */
+    width: @widthcol;
+}
+.col-min {
+    /* custom min width */
+    min-width: @widthcol;
+}
+.col-max {
+    /* custom max width */
+    max-width: @widthcol;
+}
+
+/* visual styles */
+body {
+    padding-bottom:40px;
+}
+h1 {
+    color: @subtitle-color;
+    margin:20px 0px 20px 0px;
+    font-size:28px;
+    line-height:20px;
+    text-align:left;
+}
+.namePokemon{
+    color: @main-color;
+
+}
+[class*="col-"] {
+    padding-top:10px;
+    padding-bottom:15px;
+    background:#ededed;
+}
+[class*="col-"]:before {
+    display:block;
+    position:relative;
+    margin-bottom:8px;
+    font-family:Helvetica;
+    font-size:10px;
+    letter-spacing:1px;
+   text-align:left;
+}
+.item {
+    width:100%;
+    height:100%;
+    padding:16px 8px;
+    background:#ededed;
+    background:-webkit-gradient(linear, left top, left bottom,color-stop(0%, @item-background1), color-stop(100%, @item-background2));
+    background:-moz-linear-gradient(top, @item-background1 0%, @item-background2 100%);
+    background:-ms-linear-gradient(top, @item-background1 0%, @item-background2 100%);
+}
+
+/* content styles */
+.item {
+    display:table;
+}
+.content {
+    display:table-cell;
+    vertical-align:middle;
+    text-align:center;
+    height: 200px;
+}
+.content:before {
+    font-family:Helvetica;
+    font-size:12px;
+    letter-spacing:1px;
+    color:@main-color;
+}
