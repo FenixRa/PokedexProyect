@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="pokedex">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,120 +18,43 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed top mainbar">
-        <nav class="container-fluid">
-            <nav class="navbar-header">
-                <h1>Description</h1>
-            </nav>
+<nav class="navbar navbar-inverse navbar-fixed top mainbar" ng-controller="NavBarController">
+    <nav class="container-fluid">
+        <nav class="navbar-header">
+            <button id="ChangeToggle" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#myNavbar">
+                <div id ="navbar-icon">
+                    <span ng-class ="getIcon()"></span>
+                </div>
+
+            </button>
+            <h3>{{pageTitle}}</h3>
         </nav>
     </nav>
-
-    <div class="container">
-        <div class="row row-centered">
-            <div class="col-xs-8 col-md-6 col-centered col-min">
-                <div class="item">
-                    <div class="content">
-                        <img src="images/img/001.png"  alt="Bulbasaur" height="200px" width="200px" class="img-rounded"/>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-8 col-md-6 col-centered col-min">
-                <div class="item">
-                    <div class="content">
-                        <h1 class="namePokemon">#001 Bulbasaur</h1>
-                        <button type="button" class="btn btn-default btn-lg" style="float:left">
-                            <img src="images/img/empty-plate.png" height="32" width="32"/></button>
-                        <button type="button" class="btn btn-default btn-lg" style="float:left">
-                            <img src="images/img/star.png" height="32" width="32"/></button>
-                        <div class="info">
-                            <p class="description">Height: 0.7M</p>
-                            <p class="description">Weight: 6.9Kg</p>
-                        </div><br>
-                        <p class="description">For some time after its birth, it grows by gaining nourishment from the seed on its back.</p>
-                        <button type="button" class="btn btn-sm typegrass">Grass</button>
-                        <button type="button" class="btn btn-sm typepoison">Poision</button>
-                        <button type="button" class="btn btn-sm typebug">Bug</button>
-                    </div>
-                </div>
-            </div>
-         </div>
-        <div class="row row-centered">
-            <div class="col-xs-8 col-md-12 col-centered col-min"> <h1 class="secundary">General Information</h1>
-                <div class="item">
-                    <table class="table">
-                        <tbody>
-                            <tr>
-                                <th class="description">Hidden Abilities:</th>
-                                <th class="description">Chlorophyll</th>
-                            </tr>
-                            <tr>
-                                <th class="description">Location:</th>
-                                <th class="description">Lumiose City</th>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="row row-centered">
-            <div class="col-xs-8 col-md-12 col-centered col-min"> <h1 class="secundary">Evolution</h1>
-                        <div class="row">
-                            <div class="col-xs-9">
-                                <img src="images/img/001.png"  alt="Bulbasaur" height="100px" width="100px" class="img-thumbnail"/>
-                               Bulbasaur<br>
-                                <button type="button" class="btn btn-sm typegrass">Grass</button>
-                                <button type="button" class="btn btn-sm typepoison">Poison</button>
-                                <button type="button" class="btn btn-sm typebug">Bug</button>
-
-                            </div>
-
-                            <div class="col-xs-3">
-                                <kbd>#001</kbd>
-                            </div>
-
-                        </div>
-
-                        <div class="row">
-                            <div class="col-xs-9">
-                                <img src="images/img/002.png"  alt="Ivysaur" height="100px" width="100px" class="img-thumbnail"/>
-                                Ivysaur<br>
-                                <button type="button" class="btn btn-sm typegrass">Grass</button>
-                                <button type="button" class="btn btn-sm typepoison">Poison</button>
-                                <button type="button" class="btn btn-sm typebug">Bug</button>
-
-                            </div>
-                            <div class="col-xs-3">
-                                <kbd>#002</kbd>
-                                <br><kbd>LV.16</kbd>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-xs-9">
-                                <img src="images/img/003.png"  alt="Venusaur" height="100px" width="100px" class="img-thumbnail"/>
-                                Venusaur<br>
-                                <button type="button" class="btn btn-sm typegrass">Grass</button>
-                                <button type="button" class="btn btn-sm typepoison">Poison</button>
-                                <button type="button" class="btn btn-sm typebug">Bug</button>
-
-                            </div>
-
-                            <div class="col-xs-3">
-                                <kbd>#003</kbd>
-                                <br><kbd>LV.32</kbd>
-                            </div>
-                        </div>
-
-
-            </div>
-        </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+            <li>
+                <a class="dropdown-toggle" href="#Mainmenu" >ALL POKEMON <span class="glyphicon glyphicon-chevron-right"></span></a>
+            </li>
+            <li>
+                <a href="#">CAUGHT POKEMON</a>
+            </li>
+            <li>
+                <a href="#">BATTLEBOX</a>
+            </li>
+        </ul>
 
     </div>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="scripts\js\lib\jquery\dist\jquery.min.js"></script>
-    <script src="scripts\js\lib\less\dist\less.min.js" type="text/javascript"></script>
+</nav>
 
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="scripts\js\lib\bootstrap\dist\js\bootstrap.min.js"></script>
+<div ng-view></div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="scripts\js\lib\jquery\dist\jquery.min.js"></script>
+<script src="scripts\js\lib\less\dist\less.min.js" type="text/javascript"></script>
+<script src="scripts\js\lib\angular\angular.js"></script>
+<script src="scripts\js\lib\angular-route\angular-route.js"></script>
+<script src="scripts\js\custom\animations.js"></script>
+<script src="scripts\js\custom\main.js" type="text/javascript"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="scripts\js\lib\bootstrap\dist\js\bootstrap.min.js"></script>
 </body>
 </html>
