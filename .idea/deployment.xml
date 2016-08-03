@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="Pokedex" uploadOnCheckin="2d63e325-d458-41ae-ba13-2fab03562184" showNewOnTargetInSync="false">
+  <component name="PublishConfigData" serverName="Pokedex" uploadOnCheckin="dfd73884-ab24-4f55-b2ce-aa8c731bb8e6" showNewOnTargetInSync="false">
     <serverData>
       <paths name="Pokedex">
         <serverdata>
@@ -10,6 +10,6 @@
         </serverdata>
       </paths>
     </serverData>
-    <option name="myUploadOnCheckinName" value="PokedexOnline" />
+    <option name="myUploadOnCheckinName" value="Pokedex" />
   </component>
 </project>
