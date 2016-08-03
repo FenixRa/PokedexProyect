@@ -2,10 +2,10 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="2d63e325-d458-41ae-ba13-2fab03562184" name="PokedexOnline" url="http://pokedexacc.azurewebsites.net/">
-        <fileTransfer host="waws-prod-ch1-017.ftp.azurewebsites.windows.net" port="21" password="dfc7dfcbdfd9dfdedfcfdfd8dfcddfcbdfc7dfcfdfd8df99df9cdf9cdf98" username="pokedexacc\rarg100192">
+      <webServer id="dfd73884-ab24-4f55-b2ce-aa8c731bb8e6" name="Pokedex" url="http://pokedexfenixacc.azurewebsites.net">
+        <fileTransfer host="waws-prod-ch1-017.ftp.azurewebsites.windows.net" port="21" password="dfc7dfcbdfd9dfdedfcfdfd8dfcddfcbdfc7dfcfdfd8df99df9cdf9cdf98" username="PokedexFenixAcc\rarg100192">
           <advancedOptions>
-            <advancedOptions compatibilityMode="true" dataProtectionLevel="Private" />
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" />
           </advancedOptions>
           <option name="port" value="21" />
         </fileTransfer>

@@ -1,4 +1,5 @@
 {
+  "start":  "lessc styles\mycss.less > styles\mycss.less; node app.js" ,
   "name": "codechallenge2_robertoramirez",
   "version": "1.0.0",
   "description": "Code challenge 2",
@@ -34,4 +35,5 @@
     "karma-requirejs": "^1.0.0",
     "requirejs": "^2.2.0"
   }
+
 }

@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="PokedexOnline">
+  <component name="PublishConfigData" serverName="Pokedex" uploadOnCheckin="2d63e325-d458-41ae-ba13-2fab03562184" showNewOnTargetInSync="false">
     <serverData>
-      <paths name="PokedexOnline">
+      <paths name="Pokedex">
         <serverdata>
           <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/site/wwwroot/app" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
     </serverData>
+    <option name="myUploadOnCheckinName" value="PokedexOnline" />
   </component>
 </project>
