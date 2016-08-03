@@ -1,3 +1,7 @@
-/**
- * Created by Maste on 27/07/2016.
- */
+$(function() {
+    $('#ChangeToggle').on('show'),function () {
+
+    }
+
+
+});

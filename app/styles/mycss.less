@@ -1,11 +1,27 @@
 @main-color: #E91E63;
 @title-color: #949494;
 @subtitle-color: #FFFFFF;
+@type-normal: #8a8a59;
+@type-fire: #f08030;
+@type-water: #6890f0;
+@type-electric: #f8d030;
 @type-grass: #97D077;
+@type-ice: #98d8d8;
+@type-fight: #c03028;
+@type-poison: #a040a0;
+@type-ground: #e0c068;
+@type-fly: #a890f0;
+@type-psy: #f85888;
 @type-bug: #67AB9F;
-@type-poison: #A341A3;
+@type-rock: #b8a038;
+@type-ghost: #705898;
+@type-dragon: #7038f8;
+@type-fairy: #e898e8;
+@type-steel: #b8b8d0;
 @secundary-color: #949494;
 @widthcol: 320px;
+@padtop: 15px;
+@padzero: 0px;
 @item-background1: #f4f4f4;
 @item-background2: #ededed;
 @nothing: #000000;
@@ -24,7 +40,7 @@
 
 }
 .secundary{
-    padding: 15px 0px 0px 0px;
+    padding: @padtop 0px 0px 0px;
     text-align:left;
     background-color: @secundary-color;
     height: 50px;
@@ -33,19 +49,77 @@
     text-align: center;
     width:60px;
 }
-.typegrass{
+#normal{
+    color: @subtitle-color;
+    background-color: @type-normal;
+}
+#fire{
+    color: @subtitle-color;
+    background-color: @type-fire;
+}
+#water{
+    color: @subtitle-color;
+    background-color: @type-water;
+}
+#electric{
+    color: @subtitle-color;
+    background-color: @type-electric;
+}
+#grass{
     color: @subtitle-color;
     background-color: @type-grass;
 }
-.typebug{
+#ice{
     color: @subtitle-color;
-    background-color: @type-bug;
-
+    background-color: @type-ice;
 }
-.typepoison{
+#fighting{
+    color: @subtitle-color;
+    background-color: @type-fight;
+}
+#poison{
     color: @subtitle-color;
     background-color:@type-poison;
+
 }
+#ground{
+    color: @subtitle-color;
+    background-color: @type-ground;
+}
+#flying{
+    color: @subtitle-color;
+    background-color: @type-fly;
+}
+#psychic{
+    color: @subtitle-color;
+    background-color: @type-psy;
+}
+#bug{
+    color: @subtitle-color;
+    background-color: @type-bug;
+}
+#rock{
+    color: @subtitle-color;
+    background-color: @type-rock;
+}
+#ghost{
+    color: @subtitle-color;
+    background-color: @type-ghost;
+}
+#dragon{
+    color: @subtitle-color;
+    background-color: @type-dragon;
+}
+#fairy{
+    color: @subtitle-color;
+    background-color: @type-fairy;
+
+}
+#steel{
+    color: @subtitle-color;
+    background-color: @type-steel;
+}
+
 .description{
     color: @title-color;
     margin-bottom: 0px;
@@ -88,7 +162,19 @@ h1 {
     margin:20px 0px 20px 0px;
     font-size:28px;
     line-height:20px;
-    text-align:left;
+    text-align:center;
+}
+h3{
+    color: @subtitle-color;
+    margin:20px 0px 20px 0px;
+    font-size:22px;
+    line-height:20px;
+    text-align:center;
+
+}
+.navbar-toggle{
+    float: left;
+
 }
 .namePokemon{
     color: @main-color;
@@ -133,4 +219,10 @@ h1 {
     font-size:12px;
     letter-spacing:1px;
     color:@main-color;
+}
+#wrapper.toggled #menu-toggle span:before {
+    content:'\2212';
+}
+#dropdownlist{
+    text-align: center;
 }

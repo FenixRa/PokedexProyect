@@ -1,10 +1,101 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<div class="container" ng-controller="DescriptionController">
+    <div class="row row-centered">
+        <div class="col-xs-12 col-md-6 col-centered col-min">
+            <div class="item">
+                <div class="content">
+                    <img ng-src={{pokemon.icon}}  alt={{pokemon.name}} height="200px" width="200px" class="img-rounded"/>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-6 col-centered col-min">
+            <div class="item">
+                <div class="content">
+                    <h1 class="namePokemon">#{{pokemon.id}} {{pokemon.name | capitalize}}</h1>
+                    <button type="button" class="btn btn-default btn-lg" style="float:left">
+                        <img src="images/img/empty-plate.png" height="32" width="32"/></button>
+                    <button type="button" class="btn btn-default btn-lg" style="float:left">
+                        <img src="images/img/star.png" height="32" width="32"/></button>
+                    <div class="info">
+                        <p class="description">Height: {{pokemon.height/10}}M</p>
+                        <p class="description">Weight: {{pokemon.weight/10}}Kg</p>
+                    </div><br>
+                    <p class="description">{{additionaldettails.flavor_text_entries[1].flavor_text}}</p>
+                    <div class="pull-left" ng-repeat="type in pokemon.types">
+                        <button type="button" class="btn btn-sm type" id={{type.type.name}}>{{type.type.name| capitalize}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row row-centered">
+        <div class="col-xs-12 col-md-12 col-centered col-min"> <h1 class="secundary">General Information</h1>
+            <div class="item">
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th class="description">Hidden Abilities:</th>
+                        <th class="description">Chlorophyll</th>
+                    </tr>
+                    <tr>
+                        <th class="description">Location:</th>
+                        <th class="description">Lumiose City</th>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row row-centered">
+        <div class="col-xs-12 col-md-12 col-centered col-min"> <h1 class="secundary">Evolution</h1>
+            <div class="row">
+                <div class="col-xs-9">
+                    <img src="images/img/001.png"  alt="Bulbasaur" height="100px" width="100px" class="img-thumbnail"/>
+                    Bulbasaur<br>
+                    <button type="button" class="btn btn-sm typegrass">Grass</button>
+                    <button type="button" class="btn btn-sm typepoison">Poison</button>
+                    <button type="button" class="btn btn-sm typebug">Bug</button>
+
+                </div>
+
+                <div class="col-xs-3">
+                    <kbd>#001</kbd>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-xs-9">
+                    <img src="images/img/002.png"  alt="Ivysaur" height="100px" width="100px" class="img-thumbnail"/>
+                    Ivysaur<br>
+                    <button type="button" class="btn btn-sm typegrass">Grass</button>
+                    <button type="button" class="btn btn-sm typepoison">Poison</button>
+                    <button type="button" class="btn btn-sm typebug">Bug</button>
+
+                </div>
+                <div class="col-xs-3">
+                    <kbd>#002</kbd>
+                    <br><kbd>LV.16</kbd>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-9">
+                    <img src="images/img/003.png"  alt="Venusaur" height="100px" width="100px" class="img-thumbnail"/>
+                    Venusaur<br>
+                    <button type="button" class="btn btn-sm typegrass">Grass</button>
+                    <button type="button" class="btn btn-sm typepoison">Poison</button>
+                    <button type="button" class="btn btn-sm typebug">Bug</button>
+
+                </div>
+
+                <div class="col-xs-3">
+                    <kbd>#003</kbd>
+                    <br><kbd>LV.32</kbd>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
