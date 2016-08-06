@@ -1,5 +1,5 @@
 'use strict';
-var Poke = angular.module('pokedex',['ngRoute']);
+var Poke = angular.module('pokedex',['ngRoute','ngStorage']);
 
 Poke.config(['$routeProvider',
     function ($routeProvider) {
@@ -63,18 +63,33 @@ Poke.controller('NavBarController',function ($scope,SharedProperties) {
     $scope.menu = SharedProperties.getMenu();
 
 });
-Poke.controller('MainMenuController',function ($scope, $http, SharedProperties,$q) {
+
+Poke.controller('MainMenuController',function ($scope, $http, $localStorage,$q,SharedProperties) {
     SharedProperties.setMenu(true);
+    $scope.$storage = $localStorage;
     $scope.publist = [];
     $scope.detailList = [];
     $scope.locationList = [];
     $scope.order = false;
 
-    for(var i=9; i<=14; i++)
-    {
-        newFetching(i);
+    if(!$scope.$storage.isDataSaved){
+        for(var i=1; i<=15; i++)
+        {
+            newFetching(i);
+        }
+        $scope.$storage.main = $scope.publist;
+        $scope.$storage.detail = $scope.detailList;
+        $scope.$storage.location = $scope.locationList;
+        $scope.$storage.isDataSaved = true;
 
+    }else{
+        $scope.publist = $scope.$storage.main;
+        $scope.detailList = $scope.$storage.detail;
+        $scope.locationList = $scope.$storage.location;
     }
+
+
+
     function newFetching(i) {
         $scope.pokeList = $http.get('http://pokeapi.co/api/v2/pokemon/'+i+'',{cache: false});
         $scope.pokeLocation = $http.get('http://pokeapi.co/api/v2/pokemon/'+i+'/encounters',{cache: false});
@@ -92,6 +107,9 @@ Poke.controller('MainMenuController',function ($scope, $http, SharedProperties,$
 
             $scope.detailList.push(response[1].data);
             $scope.locationList.push(response[2].data);
+
+
+
         });
     }
 

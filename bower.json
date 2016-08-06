@@ -21,6 +21,7 @@
     "jquery": "^2.2",
     "less": "^2.7.1",
     "angular": "^1.5.8",
-    "angular-route": "^1.5.8"
+    "angular-route": "^1.5.8",
+    "ngstorage": "^0.3.11"
   }
 }
