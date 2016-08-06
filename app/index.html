@@ -18,27 +18,32 @@
 </head>
 
 <body>
-<nav class="navbar navbar-inverse navbar-fixed top mainbar" ng-controller="NavBarController">
+<nav class="navbar navbar-inverse" ng-controller="NavBarController">
     <nav class="container-fluid">
         <nav class="navbar-header">
-            <button id="ChangeToggle" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#myNavbar">
+            <button ng-if="menu" type="button" class="navbar-toggle buttonFormat" data-toggle="collapse" data-target="#myNavbar">
                 <div id ="navbar-icon">
-                    <span ng-class ="getIcon()"></span>
+                    <i class="glyphicon glyphicon-large glyphicon glyphicon-align-justify"></i>
                 </div>
 
             </button>
-            <h3>{{pageTitle}}</h3>
+            <a href="#Mainmenu"><button ng-if="!menu" type="button" class="navbar-toggle buttonFormat">
+                <div id ="navbar-icon">
+                    <i class="glyphicon glyphicon-large glyphicon glyphicon-chevron-left"></i>
+                </div>
+            </button></a>
+            <h3><span ng-bind="pageTitle"></span></h3>
         </nav>
     </nav>
     <div class="collapse navbar-collapse" id="myNavbar">
-        <ul class="nav navbar-nav">
-            <li>
+        <ul class="nav navbar-nav dropdownList">
+            <li id="itemList">
                 <a class="dropdown-toggle" href="#Mainmenu" >ALL POKEMON <span class="glyphicon glyphicon-chevron-right"></span></a>
             </li>
-            <li>
+            <li id="itemList">
                 <a href="#">CAUGHT POKEMON</a>
             </li>
-            <li>
+            <li id="itemList">
                 <a href="#">BATTLEBOX</a>
             </li>
         </ul>

@@ -7,12 +7,14 @@ Poke.config(['$routeProvider',
     when('/MainMenu',{
         templateUrl: 'templates/main.html',
         controller: 'MainMenuController',
-        title: 'All pokemon'
+        title: 'All pokemon',
+        menuAction: true
     }).
     when('/Description/',{
         templateUrl: 'templates/description.html',
         controller: 'DescriptionController',
-        title: 'Description'
+        title: 'Description',
+        menuAction: false
     }).
     otherwise({
         redirectTo: '/MainMenu'
@@ -22,7 +24,9 @@ Poke.config(['$routeProvider',
 
 Poke.service('SharedProperties',function () {
     var objectPoke = null;
-    var stateButton = 0;
+    var detailsPoke = null;
+    var locationPoke = null;
+    var menuIcon = true;
     return{
         setObject: function (item) {
             objectPoke = item;
@@ -30,83 +34,91 @@ Poke.service('SharedProperties',function () {
         getObject: function () {
             return objectPoke;
         },
-        setBtn: function (id) {
-            stateButton = id;
+        setDetails: function (item) {
+            detailsPoke = item;
         },
-        getBtn: function () {
-            return stateButton;
+        getDetails: function () {
+            return detailsPoke;
+        },
+        setLocation: function (item) {
+            locationPoke = item;
+        },
+        getLocation: function () {
+            return locationPoke;
+        },
+        setMenu: function (item) {
+          menuIcon = item;
+        },
+        getMenu: function () {
+          return menuIcon;
         }
     }
 });
 
 Poke.controller('NavBarController',function ($scope,SharedProperties) {
-    SharedProperties.setBtn(0);
     $scope.$on('$routeChangeSuccess', function (event, data) {
         $scope.pageTitle = data.title;
+        $scope.menu = data.menuAction;
     });
+    $scope.menu = SharedProperties.getMenu();
 
-    $scope.btnIcon=["glyphicon glyphicon-align-justify", "glyphicon glyphicon-remove"];
-
-    $scope.getIcon = function () {
-        $scope.btn = SharedProperties.getBtn();
-        return $scope.btnIcon[$scope.btn];
-    }
 });
-
-Poke.controller('MainMenuController',function ($scope, $http, SharedProperties) {
+Poke.controller('MainMenuController',function ($scope, $http, SharedProperties,$q) {
+    SharedProperties.setMenu(true);
     $scope.publist = [];
+    $scope.detailList = [];
+    $scope.locationList = [];
     $scope.order = false;
-    for(var i=1; i<=10; i++)
+
+    for(var i=9; i<=14; i++)
     {
-        fetching(i);
+        newFetching(i);
+
     }
+    function newFetching(i) {
+        $scope.pokeList = $http.get('http://pokeapi.co/api/v2/pokemon/'+i+'',{cache: false});
+        $scope.pokeLocation = $http.get('http://pokeapi.co/api/v2/pokemon/'+i+'/encounters',{cache: false});
+        $scope.pokeDetail = $http.get('http://pokeapi.co/api/v2/pokemon-species/'+i+'',{cache:false});
 
+        $q.all([$scope.pokeList, $scope.pokeDetail,$scope.pokeLocation]).then(function (response) {
+            $scope.publist.push({name: response[0].data.name,
+                id: response[0].data.id,
+                icon: response[0].data.sprites.front_default,
+                types: response[0].data.types,
+                weight: response[0].data.weight,
+                height: response[0].data.height,
+                abilities: response[0].data.abilities,
+                locations: response[0].data.location_area_encounters});
 
-    function fetching(i){
-        $http({
-            method: 'GET',
-            url: 'http://pokeapi.co/api/v2/pokemon/'+i+''
-
-        }).then(function successCallback(response) {
-            $scope.listpokemons = response.data;
-            $scope.publist.push({name: $scope.listpokemons.name,
-                             id: $scope.listpokemons.id,
-                             icon: $scope.listpokemons.sprites.front_default,
-                             types: $scope.listpokemons.types,
-                             weight: $scope.listpokemons.weight,
-                             height: $scope.listpokemons.height});
-        }, function errorCallback(response) {
-
+            $scope.detailList.push(response[1].data);
+            $scope.locationList.push(response[2].data);
         });
-
     }
+
+
     $scope.changeOrder = function () {
         $scope.order = !$scope.order;
     };
 
     $scope.selectedPokemon = function (item) {
         SharedProperties.setObject(item);
+
     };
+    $scope.selectedDetail = function (item) {
+        SharedProperties.setDetails($scope.detailList[item]);
+    }
+    $scope.selectedLocation = function (item) {
+        SharedProperties.setLocation($scope.locationList[item]);
+    }
 
 });
 
 Poke.controller('DescriptionController',function ($scope, $http,SharedProperties) {
-    SharedProperties.setBtn(1);
+    SharedProperties.setMenu(false);
     $scope.pokemon = SharedProperties.getObject();
+    $scope.additionaldettails = SharedProperties.getDetails();
+    $scope.locationdata = SharedProperties.getLocation();
 
-    fetchadditional($scope.pokemon.id);
-    function fetchadditional(i) {
-        $http({
-            method: 'GET',
-            url: 'http://pokeapi.co/api/v2/pokemon-species/'+i+''
-
-        }).then(function successCallback(response) {
-            $scope.additionaldettails = response.data;
-
-        }, function errorCallback(response) {
-
-        });
-    }
 
 });
 
@@ -135,6 +147,29 @@ Poke.filter('searchName',function () {
         return result;
     }
 
+});
+
+Poke.filter('listZeroes',function () {
+    return function (n, len) {
+        var num = parseInt(n, 10);
+        len = parseInt(len, 10);
+        if (isNaN(num) || isNaN(len)) {
+            return n;
+        }
+        num = ''+num;
+        while (num.length < len) {
+            num = '0'+num;
+        }
+        return num;
+    };
+});
+
+Poke.filter('removeUnderScores',function () {
+    return function (input) {
+        input = input || '-';
+
+        return input.replace(/-/g, ' ');
+    };
 });
 
 

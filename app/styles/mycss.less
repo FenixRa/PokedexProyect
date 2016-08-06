@@ -31,96 +31,81 @@
     src: asset-url('/font/Helvetica.otf') format('opentype');
 }
 
-
-.mainbar{
-    background-color: @main-color;
-}
-.navbar{
-    margin-bottom: 5px;
-
-}
-.secundary{
-    padding: @padtop 0px 0px 0px;
-    text-align:left;
-    background-color: @secundary-color;
-    height: 50px;
-}
-.typegrass, .typebug,.typepoison{
-    text-align: center;
-    width:60px;
+#normal, #fire,#water,#electric,#grass,#ice,#fighting,#poison,#ground,#flying,#psychic,#bug,#rock,#ghost,#dragon,#fairy,#steel{
+    border-radius: 5px;
+    margin-right: 6px;
+    height: 27px;
+    width: 60px;
+    float:left;
+    color: @subtitle-color;
+    vertical-align: middle;
 }
 #normal{
-    color: @subtitle-color;
     background-color: @type-normal;
 }
 #fire{
-    color: @subtitle-color;
     background-color: @type-fire;
 }
 #water{
-    color: @subtitle-color;
     background-color: @type-water;
 }
 #electric{
-    color: @subtitle-color;
     background-color: @type-electric;
 }
 #grass{
-    color: @subtitle-color;
     background-color: @type-grass;
 }
 #ice{
-    color: @subtitle-color;
     background-color: @type-ice;
 }
 #fighting{
-    color: @subtitle-color;
     background-color: @type-fight;
 }
 #poison{
-    color: @subtitle-color;
     background-color:@type-poison;
-
 }
 #ground{
-    color: @subtitle-color;
     background-color: @type-ground;
 }
 #flying{
-    color: @subtitle-color;
     background-color: @type-fly;
 }
 #psychic{
-    color: @subtitle-color;
     background-color: @type-psy;
 }
 #bug{
-    color: @subtitle-color;
     background-color: @type-bug;
 }
 #rock{
-    color: @subtitle-color;
     background-color: @type-rock;
 }
 #ghost{
-    color: @subtitle-color;
     background-color: @type-ghost;
 }
 #dragon{
-    color: @subtitle-color;
     background-color: @type-dragon;
 }
 #fairy{
-    color: @subtitle-color;
     background-color: @type-fairy;
-
 }
 #steel{
-    color: @subtitle-color;
     background-color: @type-steel;
 }
+#itemPokemon{
+    border: 1px solid @secundary-color;
+}
+.tableFormat{
+    padding-right: 0px;
+    padding-left: 0px;
+}
+.searchFormat{
+    padding-left: 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
 
+}
 .description{
+    margin-right: 100px;
     color: @title-color;
     margin-bottom: 0px;
 }
@@ -152,38 +137,37 @@
     /* custom max width */
     max-width: @widthcol;
 }
+.navbar{
+    background-color: @main-color;
+    margin-bottom: 0px;
+    text-align: center;
 
-/* visual styles */
-body {
-    padding-bottom:40px;
 }
-h1 {
-    color: @subtitle-color;
-    margin:20px 0px 20px 0px;
-    font-size:28px;
-    line-height:20px;
-    text-align:center;
-}
-h3{
-    color: @subtitle-color;
-    margin:20px 0px 20px 0px;
-    font-size:22px;
-    line-height:20px;
-    text-align:center;
-
+.secundary{
+    padding: @padtop 0px 0px 0px;
+    text-align:left;
+    background-color: @secundary-color;
+    height: 50px;
 }
 .navbar-toggle{
     float: left;
 
 }
-.namePokemon{
+.namePokemonTitleDesc{
     color: @main-color;
-
+    width: 50%;
+    float: left;
+}
+.actionbutton{
+    float: right;
+    border: none;
+    background: none;
+}
+.namePokemonList{
+    color: @nothing;
 }
 [class*="col-"] {
-    padding-top:10px;
-    padding-bottom:15px;
-    background:#ededed;
+    background:@item-background1;
 }
 [class*="col-"]:before {
     display:block;
@@ -192,7 +176,7 @@ h3{
     font-family:Helvetica;
     font-size:10px;
     letter-spacing:1px;
-   text-align:left;
+    text-align:left;
 }
 .item {
     width:100%;
@@ -220,9 +204,58 @@ h3{
     letter-spacing:1px;
     color:@main-color;
 }
+#special{
+    float:right;
+}
 #wrapper.toggled #menu-toggle span:before {
     content:'\2212';
 }
-#dropdownlist{
+
+#dropdownlist {
     text-align: center;
+
 }
+#equalheight {
+    overflow: hidden;
+}
+.equalline{
+    margin-bottom: -99999px;
+    padding-bottom: 99999px;
+
+
+}
+#itemList{
+    color: @subtitle-color;
+
+
+}
+
+.buttonFormat{
+    color: @nothing;
+    border: none;
+    background: none;
+
+}
+
+.navbar-inverse .navbar-nav>.active>a,.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover{
+    background-color: darken(@main-color,30%);
+
+
+}
+/* visual styles */
+body {
+    padding-bottom:40px;
+}
+h1, h3{
+    color: @subtitle-color;
+    margin:20px 0px 20px 0px;
+    line-height:20px;
+    text-align:center;
+}
+h1{
+    font-size:28px;
+}
+h3{
+    font-size:22px;
+}
+

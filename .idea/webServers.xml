@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="c8a26abd-6481-4c12-8452-793476ed7dd4" name="RAPokedex" url="http://rapokedex.azurewebsites.net">
+        <fileTransfer host="waws-prod-ch1-017.ftp.azurewebsites.windows.net" port="21" password="dfc7dfcbdfd9dfdedfcfdfd8dfcddfcbdfc7dfcfdfd8df99df9cdf9cdf98" username="RAPokedex\rarg100192">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
