@@ -127,7 +127,9 @@ Poke.controller('MainMenuController', function ($scope,$localStorage,DownloadDat
         $scope.order = !$scope.order;
     }
 
-    $scope.addBattleBox()
+    $scope.addBattleBox = function(){
+
+    }
 
     $scope.selectedPokemon = function (item) {
         SharedProperties.setObject(item);
