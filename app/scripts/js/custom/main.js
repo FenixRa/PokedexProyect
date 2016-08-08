@@ -1,8 +1,8 @@
 'use strict';
 var Poke = angular.module('pokedex',['ngRoute','ngStorage','ui-notification']);
 
-Poke.config(['$routeProvider',
-    function ($routeProvider) {
+
+Poke.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.
     when('/MainMenu',{
         templateUrl: 'templates/main.html',
@@ -16,6 +16,13 @@ Poke.config(['$routeProvider',
         title: 'Description',
         menuAction: false
     }).
+    when('/ListBattle',{
+        templateUrl: 'templates/lists.html',
+        controller: 'battleController',
+        title: 'Battlebox',
+        menuAction: true
+
+    }).
     otherwise({
         redirectTo: '/MainMenu'
 
@@ -23,44 +30,44 @@ Poke.config(['$routeProvider',
 }]);
 
 
-Poke.factory('DownloadData',  function ($http,$q) {
+Poke.factory('DownloadData',function ($http,$q,$localStorage) {
     var mainList =[];
     var detailList =[];
     var locationList =[];
     var evolutionList =[];
+    var downloadData =[];
+        if(!$localStorage.isDataSaved){
+            for(var i =1; i<=5; i++){
+                var caught= false;
+                var pokeList = $http.get('http://pokeapi.co/api/v2/pokemon/'+i+'',{cache: false});
+                var pokeLocation = $http.get('http://pokeapi.co/api/v2/pokemon/'+i+'/encounters',{cache: false});
+                var pokeDetail = $http.get('http://pokeapi.co/api/v2/pokemon-species/'+i+'',{cache:false});
+                var pokeEvolution = $http.get('http://pokeapi.co/api/v2/evolution-chain/'+i+'',{cache:false});
+                downloadData.push($q.all([pokeList, pokeDetail,pokeLocation,pokeEvolution]).then(Download,Error));
 
-
-
-        var downloadData =[];
-        for(var i =1; i<=20; i++){
-
-            var pokeList = $http.get('http://pokeapi.co/api/v2/pokemon/'+i+'',{cache: false});
-            var pokeLocation = $http.get('http://pokeapi.co/api/v2/pokemon/'+i+'/encounters',{cache: false});
-            var pokeDetail = $http.get('http://pokeapi.co/api/v2/pokemon-species/'+i+'',{cache:false});
-            var pokeEvolution = $http.get('http://pokeapi.co/api/v2/evolution-chain/'+i+'',{cache:false});
-            downloadData.push($q.all([pokeList, pokeDetail,pokeLocation,pokeEvolution]).then(function (response) {
-                mainList.push({name: response[0].data.name,
-                    id: response[0].data.id,
-                    icon: response[0].data.sprites.front_default,
-                    types: response[0].data.types,
-                    weight: response[0].data.weight,
-                    height: response[0].data.height,
-                    abilities: response[0].data.abilities,
-                    locations: response[0].data.location_area_encounters});
-
-                detailList.push(response[1].data);
-                locationList.push(response[2].data);
-                evolutionList.push(response[3].data);
-
-
-            }));
-
+            }
         }
+    function Download(response){
+        mainList.push({name: response[0].data.name,
+            id: response[0].data.id,
+            icon: response[0].data.sprites.front_default,
+            types: response[0].data.types,
+            weight: response[0].data.weight,
+            height: response[0].data.height,
+            abilities: response[0].data.abilities,
+            locations: response[0].data.location_area_encounters,
+            caught: caught});
 
+        detailList.push(response[1].data);
+        locationList.push(response[2].data);
+        evolutionList.push(response[3].data);
+    }
+    function Error(response) {
 
-
+    }
 
     return{
+        downloadData: downloadData,
         mainList : mainList,
         detailList : detailList,
         locationList : locationList,
@@ -83,43 +90,44 @@ Poke.controller('NavBarController',function ($scope,SharedProperties) {
 });
 
 
-Poke.controller('MainMenuController', function ($scope,$localStorage,DownloadData,SharedProperties, Notification) {
+Poke.controller('MainMenuController', function ($scope,$localStorage,$rootScope,DownloadData,SharedProperties, Notification) {
     SharedProperties.setMenu(true);
     $scope.order = false;
-    $scope.$storage = $localStorage;
-    $scope.$storage = $localStorage.$default({
-        isDataSaved: false
-    });
+    if(!$scope.$storage){
+        $scope.$storage = $localStorage;
+        $scope.$storage = $localStorage.$default({
+            isDataSaved: false,
+            caughtList: {},
+            battleList: {},
+        });
+    }
+    //$localStorage.$reset();
     if($scope.$storage.isDataSaved){
-        BindToView();
+        Notification.success({message: 'Welcome', positionY: 'bottom', positionX: 'center'});
+        bindToView();
 
 
     }else{
         Notification.warning({message: 'Downloading data...', positionY: 'bottom', positionX: 'center'});
-        DownloadToStorage(DownloadData.mainList, DownloadData.detailList, DownloadData.locationList, DownloadData.evolutionList);
-        BindToView();
+        passToStorage(DownloadData.mainList, DownloadData.detailList, DownloadData.locationList, DownloadData.evolutionList);
+        bindToView();
 
     }
 
-    Notification.success({message: 'Welcome', positionY: 'bottom', positionX: 'center'});
 
-
-    function DownloadToStorage(publist,detailList,locationList,evolutionList) {
-
-            $scope.$storage.battleList = [];
-            $scope.$storage.caughtList = [];
+    function passToStorage(publist,detailList,locationList,evolutionList) {
             $scope.$storage.main = publist;
             $scope.$storage.detail = detailList;
             $scope.$storage.location = locationList;
             $scope.$storage.evolution = evolutionList;
-            $scope.$storage.isDataSaved = true;
 
     }
-    function BindToView() {
+    function bindToView() {
         $scope.publist = $scope.$storage.main;
         $scope.detailList = $scope.$storage.detail;
         $scope.locationList = $scope.$storage.location;
         $scope.evolutionList = $scope.$storage.evolution;
+        $scope.$storage.isDataSaved = true;
 
     }
 
@@ -127,10 +135,13 @@ Poke.controller('MainMenuController', function ($scope,$localStorage,DownloadDat
         $scope.order = !$scope.order;
     }
 
-    $scope.addBattleBox = function(){
+    $scope.addBattleBox = function(item){
+        SharedProperties.setBattle(item);
+    }
+    $scope.addCaught = function(item){
+        SharedProperties.setCaught(item);
 
     }
-
     $scope.selectedPokemon = function (item) {
         SharedProperties.setObject(item);
 
@@ -155,16 +166,19 @@ Poke.controller('DescriptionController',function ($scope, $http,SharedProperties
     $scope.evolutions = SharedProperties.getEvolution();
 
     $scope.addCaught = function(item){
-        SharedProperties.setCaught(item);
+        $scope.$localStorage.caughtList.push({pokemon:item});
+        SharedProperties.setCaught($scope.$localStorage.caughtList);
 
     }
     $scope.addBattleBox = function(item) {
-        SharedProperties.setBattle(item);
+        $scope.$localStorage.battleList.push({pokemon: item});
+        SharedProperties.setBattle($scope.$localStorage.battleList);
     }
 
 });
 
-Poke.controller('listsController',function ($scope,SharedProperties) {
+Poke.controller('battleController',function ($scope,SharedProperties) {
+    $scope.listBattle = SharedProperties.getBattle();
     $scope.order = false;
     $scope.isCaught = SharedProperties.getType();
     if($scope.isCaught){
@@ -177,13 +191,13 @@ Poke.controller('listsController',function ($scope,SharedProperties) {
     }
 });
 
-Poke.service('SharedProperties',function () {
+Poke.service('SharedProperties',function ($localStorage) {
     var objectPoke = null;
     var detailsPoke = null;
     var locationPoke = null;
     var evolutionPoke = null;
-    var listCaught = null;
-    var listBattleBox = null;
+    var listCaught = [];
+    var listBattleBox = [];
     var isCaught = false;
     var menuIcon = true;
     return{
@@ -218,16 +232,16 @@ Poke.service('SharedProperties',function () {
             return evolutionPoke;
         },
         setCaught: function (item) {
-            listCaught = item;
-            isCaught = true;
+            item.caught = true;
+            listCaught.push(item);
         },
         getCaught: function () {
+
             return listCaught;
         },
         setBattle: function (item) {
-            listBattleBox = item;
-            isCaught = false;
 
+            listBattleBox.push(item);
         },
         getBattle: function () {
             return listBattleBox;
@@ -243,7 +257,7 @@ Poke.service('SharedProperties',function () {
 Poke.filter('capitalize', function() {
     return function(input) {
         return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
-    }
+    };
 });
 
 Poke.filter('searchName',function () {
@@ -263,7 +277,7 @@ Poke.filter('searchName',function () {
             }
         });
         return result;
-    }
+    };
 
 });
 

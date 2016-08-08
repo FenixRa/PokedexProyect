@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="pokedex">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,7 +18,7 @@
     <![endif]-->
 </head>
 
-<body>
+<body ng-app="pokedex">
 <nav class="navbar navbar-inverse" ng-controller="NavBarController">
     <nav class="container-fluid">
         <nav class="navbar-header">
@@ -47,7 +47,7 @@
                 <a href="#">CAUGHT POKEMON</a>
             </li>
             <li id="itemList">
-                <a href="#">BATTLEBOX</a>
+                <a href="#ListBattle">BATTLEBOX</a>
             </li>
         </ul>
 
@@ -61,7 +61,7 @@
 <script src="scripts\js\lib\angular\angular.js"></script>
 <script src="scripts\js\lib\angular-route\angular-route.js"></script>
 <script src="scripts\js\custom\animations.js"></script>
-<script src="scripts\js\custom\main.js" type="text/javascript"></script>
+<script src="scripts\js\custom\main.js"></script>
 <script src="scripts\js\lib\ngstorage\ngStorage.min.js"></script>
 <script src="scripts\js\lib\angular-ui-notification\dist\angular-ui-notification.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
