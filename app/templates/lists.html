@@ -1,11 +1,11 @@
 
-<div ng-controller="MainMenuController">
+<div ng-controller="listsController">
     <div class="col-xs-12 col-md-12 tableFormat">
         <div class="input-group searchFormat" >
             <input type="text" ng-model="searchString" class="form-control" placeholder="Search...">
             <div class="input-group-btn">
                 <button id="OrderToggle" class="btn btn-default buttonFormat" ng-click="changeOrder()" type="submit" >
-                        <img class="filter-results-button"></img>
+                    <img class="filter-results-button"></img>
                 </button>
             </div>
         </div>
@@ -28,9 +28,9 @@
                     <td class="col-xs-3 text-nowrap" ng-click="$event.stopPropagation()">
                         #{{pokemon.id | listZeroes:3}}<br>
                         <div>
-                            <button ng-click="addBattleBox(pokemon)" type="button" class="btn btn-default btn-sm actionbutton">
+                            <button type="button" class="btn btn-default btn-sm actionbutton">
                                 <img class="star"/></button>
-                            <button ng-click="addCaught(pokemon)" type="button special" class="btn btn-default btn-sm actionbutton">
+                            <button type="button special" class="btn btn-default btn-sm actionbutton">
                                 <img class="empty-plate"/></button>
 
                         </div>

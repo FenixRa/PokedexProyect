@@ -7,10 +7,10 @@
             <div class="col-xs-7 col-md-7 equalline">
                 <div class="info">
                     <h4 class="namePokemonTitleDesc">#{{pokemon.id| listZeroes:3}} {{pokemon.name | capitalize}}</h4>
-                    <button type="button" class="btn btn-default btn-sm btn pull-right actionbutton">
-                        <img src="images/img/star.png" height="20" width="20"/></button>
-                    <button type="button" class="btn btn-default btn-sm btn pull-right actionbutton">
-                        <img src="images/img/empty-plate.png" height="20" width="20"/></button>
+                    <button type="button" class="btn btn-default btn-sm actionbutton">
+                        <img class="star"/></button>
+                    <button type="button special" class="btn btn-default btn-sm actionbutton">
+                        <img class="empty-plate"/></button>
                 </div>
                 <div>
                     <p class="description">{{pokemon.height/10}}m, {{pokemon.weight/10}}kg</p>

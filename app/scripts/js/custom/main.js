@@ -22,10 +22,161 @@ Poke.config(['$routeProvider',
     });
 }]);
 
+Poke.factory('DownloadData',  function ($http,$q) {
+    var mainList =[];
+    var detailList =[];
+    var locationList =[];
+    var evolutionList =[];
+
+    function DownloadLocal(){
+
+        var downloadData =[];
+        for(var i =1; i<=20; i++){
+
+            var pokeList = $http.get('http://pokeapi.co/api/v2/pokemon/'+i+'',{cache: false});
+            var pokeLocation = $http.get('http://pokeapi.co/api/v2/pokemon/'+i+'/encounters',{cache: false});
+            var pokeDetail = $http.get('http://pokeapi.co/api/v2/pokemon-species/'+i+'',{cache:false});
+            var pokeEvolution = $http.get('http://pokeapi.co/api/v2/evolution-chain/'+i+'',{cache:false});
+            downloadData.push($q.all([pokeList, pokeDetail,pokeLocation,pokeEvolution]).then(function (response) {
+                mainList.push({name: response[0].data.name,
+                    id: response[0].data.id,
+                    icon: response[0].data.sprites.front_default,
+                    types: response[0].data.types,
+                    weight: response[0].data.weight,
+                    height: response[0].data.height,
+                    abilities: response[0].data.abilities,
+                    locations: response[0].data.location_area_encounters});
+
+                detailList.push(response[1].data);
+                locationList.push(response[2].data);
+                evolutionList.push(response[3].data);
+
+
+            }));
+
+            }
+
+    }
+
+
+    return{
+        DownloadLocal : DownloadLocal(),
+        mainList : mainList,
+        detailList : detailList,
+        locationList : locationList,
+        evolutionList : evolutionList
+
+    };
+
+
+
+});
+
+
+Poke.controller('NavBarController',function ($scope,SharedProperties) {
+    $scope.$on('$routeChangeSuccess', function (event, data) {
+        $scope.pageTitle = data.title;
+        $scope.menu = data.menuAction;
+    });
+    $scope.menu = SharedProperties.getMenu();
+
+});
+
+
+Poke.controller('MainMenuController', function ($scope,$localStorage,DownloadData,SharedProperties) {
+    SharedProperties.setMenu(true);
+    $scope.order = false;
+    $scope.$storage = $localStorage;
+    $scope.$storage = $localStorage.$default({
+        isDataSaved: false
+    });
+
+    if($scope.$storage.isDataSaved){
+        BindToView();
+
+    }else{
+        DownloadToStorage(DownloadData.mainList, DownloadData.detailList, DownloadData.locationList, DownloadData.evolutionList);
+        BindToView();
+    }
+
+
+
+    function DownloadToStorage(publist,detailList,locationList,evolutionList) {
+
+            $scope.$storage.battleList = [];
+            $scope.$storage.caughtList = [];
+            $scope.$storage.main = publist;
+            $scope.$storage.detail = detailList;
+            $scope.$storage.location = locationList;
+            $scope.$storage.evolution = evolutionList;
+            $scope.$storage.isDataSaved = true;
+
+    }
+    function BindToView() {
+        $scope.publist = $scope.$storage.main;
+        $scope.detailList = $scope.$storage.detail;
+        $scope.locationList = $scope.$storage.location;
+        $scope.evolutionList = $scope.$storage.evolution;
+    }
+
+    $scope.changeOrder = function () {
+        $scope.order = !$scope.order;
+    }
+
+    $scope.selectedPokemon = function (item) {
+        SharedProperties.setObject(item);
+
+    }
+    $scope.selectedDetail = function (item) {
+        SharedProperties.setDetails($scope.detailList[item]);
+    }
+    $scope.selectedLocation = function (item) {
+        SharedProperties.setLocation($scope.locationList[item]);
+    }
+    $scope.selectedEvolution = function (item) {
+        SharedProperties.setEvolution($scope.evolutionList[item]);
+    }
+
+});
+
+Poke.controller('DescriptionController',function ($scope, $http,SharedProperties) {
+    SharedProperties.setMenu(false);
+    $scope.pokemon = SharedProperties.getObject();
+    $scope.additionaldettails = SharedProperties.getDetails();
+    $scope.locationdata = SharedProperties.getLocation();
+    $scope.evolutions = SharedProperties.getEvolution();
+
+    $scope.addCaught = function(item){
+        SharedProperties.setCaught(item);
+
+    }
+    $scope.addBattleBox = function(item) {
+        SharedProperties.setBattle(item);
+    }
+
+});
+
+Poke.controller('listsController',function ($scope,SharedProperties) {
+    $scope.order = false;
+    $scope.isCaught = SharedProperties.getType();
+    if($scope.isCaught){
+        $scope.listToShow = SharedProperties.getCaught();
+    }else{
+        $scope.listToShow = SharedProperties.getBattle();
+    }
+    $scope.changeOrder = function () {
+        $scope.order = !$scope.order;
+    }
+});
+
 Poke.service('SharedProperties',function () {
     var objectPoke = null;
     var detailsPoke = null;
     var locationPoke = null;
+    var evolutionPoke = null;
+    var listCaught = null;
+    var listBattleBox = null;
+    var isCaught = false;
     var menuIcon = true;
     return{
         setObject: function (item) {
@@ -47,98 +198,39 @@ Poke.service('SharedProperties',function () {
             return locationPoke;
         },
         setMenu: function (item) {
-          menuIcon = item;
+            menuIcon = item;
         },
         getMenu: function () {
-          return menuIcon;
+            return menuIcon;
+        },
+        setEvolution: function (item) {
+            evolutionPoke = item;
+        },
+        getEvolution: function () {
+            return evolutionPoke;
+        },
+        setCaught: function (item) {
+            listCaught = item;
+            isCaught = true;
+        },
+        getCaught: function () {
+            return listCaught;
+        },
+        setBattle: function (item) {
+            listBattleBox = item;
+            isCaught = false;
+
+        },
+        getBattle: function () {
+            return listBattleBox;
+
+        },
+        getType: function () {
+            return isCaught;
         }
     }
 });
 
-Poke.controller('NavBarController',function ($scope,SharedProperties) {
-    $scope.$on('$routeChangeSuccess', function (event, data) {
-        $scope.pageTitle = data.title;
-        $scope.menu = data.menuAction;
-    });
-    $scope.menu = SharedProperties.getMenu();
-
-});
-
-Poke.controller('MainMenuController',function ($scope, $http, $localStorage,$q,SharedProperties) {
-    SharedProperties.setMenu(true);
-    $scope.$storage = $localStorage;
-    $scope.publist = [];
-    $scope.detailList = [];
-    $scope.locationList = [];
-    $scope.order = false;
-
-    if(!$scope.$storage.isDataSaved){
-        for(var i=1; i<=15; i++)
-        {
-            newFetching(i);
-        }
-        $scope.$storage.main = $scope.publist;
-        $scope.$storage.detail = $scope.detailList;
-        $scope.$storage.location = $scope.locationList;
-        $scope.$storage.isDataSaved = true;
-
-    }else{
-        $scope.publist = $scope.$storage.main;
-        $scope.detailList = $scope.$storage.detail;
-        $scope.locationList = $scope.$storage.location;
-    }
-
-
-
-    function newFetching(i) {
-        $scope.pokeList = $http.get('http://pokeapi.co/api/v2/pokemon/'+i+'',{cache: false});
-        $scope.pokeLocation = $http.get('http://pokeapi.co/api/v2/pokemon/'+i+'/encounters',{cache: false});
-        $scope.pokeDetail = $http.get('http://pokeapi.co/api/v2/pokemon-species/'+i+'',{cache:false});
-
-        $q.all([$scope.pokeList, $scope.pokeDetail,$scope.pokeLocation]).then(function (response) {
-            $scope.publist.push({name: response[0].data.name,
-                id: response[0].data.id,
-                icon: response[0].data.sprites.front_default,
-                types: response[0].data.types,
-                weight: response[0].data.weight,
-                height: response[0].data.height,
-                abilities: response[0].data.abilities,
-                locations: response[0].data.location_area_encounters});
-
-            $scope.detailList.push(response[1].data);
-            $scope.locationList.push(response[2].data);
-
-
-
-        });
-    }
-
-
-    $scope.changeOrder = function () {
-        $scope.order = !$scope.order;
-    };
-
-    $scope.selectedPokemon = function (item) {
-        SharedProperties.setObject(item);
-
-    };
-    $scope.selectedDetail = function (item) {
-        SharedProperties.setDetails($scope.detailList[item]);
-    }
-    $scope.selectedLocation = function (item) {
-        SharedProperties.setLocation($scope.locationList[item]);
-    }
-
-});
-
-Poke.controller('DescriptionController',function ($scope, $http,SharedProperties) {
-    SharedProperties.setMenu(false);
-    $scope.pokemon = SharedProperties.getObject();
-    $scope.additionaldettails = SharedProperties.getDetails();
-    $scope.locationdata = SharedProperties.getLocation();
-
-
-});
 
 Poke.filter('capitalize', function() {
     return function(input) {
@@ -156,7 +248,7 @@ Poke.filter('searchName',function () {
         var result = [];
 
         searchString = searchString.toLowerCase();
-        
+
         angular.forEach(arr, function (item) {
             if(item.name.toLowerCase().indexOf(searchString)!== -1){
                 result.push(item);
