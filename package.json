@@ -12,6 +12,7 @@
   "author": "Roberto Ramirez",
   "license": "ISC",
   "dependencies": {
+    "angular-ui-notification": "^0.2.0",
     "jasmine": "^2.4.1",
     "karma": "^1.1.1"
   },

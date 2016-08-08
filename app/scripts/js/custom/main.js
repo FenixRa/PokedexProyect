@@ -1,5 +1,5 @@
 'use strict';
-var Poke = angular.module('pokedex',['ngRoute','ngStorage']);
+var Poke = angular.module('pokedex',['ngRoute','ngStorage','ui-notification']);
 
 Poke.config(['$routeProvider',
     function ($routeProvider) {
@@ -22,13 +22,14 @@ Poke.config(['$routeProvider',
     });
 }]);
 
+
 Poke.factory('DownloadData',  function ($http,$q) {
     var mainList =[];
     var detailList =[];
     var locationList =[];
     var evolutionList =[];
 
-    function DownloadLocal(){
+
 
         var downloadData =[];
         for(var i =1; i<=20; i++){
@@ -54,13 +55,12 @@ Poke.factory('DownloadData',  function ($http,$q) {
 
             }));
 
-            }
+        }
 
-    }
+
 
 
     return{
-        DownloadLocal : DownloadLocal(),
         mainList : mainList,
         detailList : detailList,
         locationList : locationList,
@@ -83,22 +83,25 @@ Poke.controller('NavBarController',function ($scope,SharedProperties) {
 });
 
 
-Poke.controller('MainMenuController', function ($scope,$localStorage,DownloadData,SharedProperties) {
+Poke.controller('MainMenuController', function ($scope,$localStorage,DownloadData,SharedProperties, Notification) {
     SharedProperties.setMenu(true);
     $scope.order = false;
     $scope.$storage = $localStorage;
     $scope.$storage = $localStorage.$default({
         isDataSaved: false
     });
-
     if($scope.$storage.isDataSaved){
         BindToView();
 
+
     }else{
+        Notification.warning({message: 'Downloading data...', positionY: 'bottom', positionX: 'center'});
         DownloadToStorage(DownloadData.mainList, DownloadData.detailList, DownloadData.locationList, DownloadData.evolutionList);
         BindToView();
+
     }
 
+    Notification.success({message: 'Welcome', positionY: 'bottom', positionX: 'center'});
 
 
     function DownloadToStorage(publist,detailList,locationList,evolutionList) {
@@ -117,11 +120,14 @@ Poke.controller('MainMenuController', function ($scope,$localStorage,DownloadDat
         $scope.detailList = $scope.$storage.detail;
         $scope.locationList = $scope.$storage.location;
         $scope.evolutionList = $scope.$storage.evolution;
+
     }
 
     $scope.changeOrder = function () {
         $scope.order = !$scope.order;
     }
+
+    $scope.addBattleBox()
 
     $scope.selectedPokemon = function (item) {
         SharedProperties.setObject(item);

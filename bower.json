@@ -22,6 +22,7 @@
     "less": "^2.7.1",
     "angular": "^1.5.8",
     "angular-route": "^1.5.8",
-    "ngstorage": "^0.3.11"
+    "ngstorage": "^0.3.11",
+    "angular-ui-notification": "^0.2.0"
   }
 }
