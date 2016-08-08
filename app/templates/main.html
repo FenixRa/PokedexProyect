@@ -28,9 +28,9 @@
                     <td class="col-xs-3 text-nowrap" ng-click="$event.stopPropagation()">
                         #{{pokemon.id | listZeroes:3}}<br>
                         <div>
-                            <button ng-click="addBattleBox(pokemon)" type="button" class="btn btn-default btn-sm actionbutton">
+                            <button ng-click="addBattleBox(pokemon,$index)" type="button" class="btn btn-default btn-sm actionbutton">
                                 <img class="star"/></button>
-                            <button ng-click="addCaught(pokemon)" type="button special" class="btn btn-default btn-sm actionbutton">
+                            <button ng-click="addCaught(pokemon,$index)" type="button special" class="btn btn-default btn-sm actionbutton">
                                 <img class="empty-plate"/></button>
 
                         </div>

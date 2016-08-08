@@ -12,7 +12,7 @@
         <div class="panel panel-default" id="itemPokemon">
             <table class="table">
                 <tbody>
-                <tr class="row" ng-repeat="pokemon in publist | searchName:searchString | orderBy:'id':order" ng-click="selectedPokemon(pokemon); selectedDetail(pokemon.id-1); selectedLocation(pokemon.id-1); selectedEvolution(pokemon.id-1);">
+                <tr class="row" ng-repeat="pokemon in listBattle | searchName:searchString | orderBy:'id':order" ng-click="selectedPokemon(pokemon); selectedDetail(pokemon.id-1); selectedLocation(pokemon.id-1); selectedEvolution(pokemon.id-1);">
                     <td class="col-xs-3" ><a href="#Description">
                         <img ng-src={{pokemon.icon}} alt={{pokemon.name}} height="100px" width="100px" class="img-thumbnail">
                     </td></a>

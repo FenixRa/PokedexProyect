@@ -7,9 +7,9 @@
             <div class="col-xs-7 col-md-7 equalline">
                 <div class="info">
                     <h4 class="namePokemonTitleDesc">#{{pokemon.id| listZeroes:3}} {{pokemon.name | capitalize}}</h4>
-                    <button type="button" class="btn btn-default btn-sm actionbutton">
+                    <button ng-click="addBattleBox(pokemon)" type="button" class="btn btn-default btn-sm actionbutton">
                         <img class="star"/></button>
-                    <button type="button special" class="btn btn-default btn-sm actionbutton">
+                    <button ng-click="addCaught(pokemon)" type="button special" class="btn btn-default btn-sm actionbutton">
                         <img class="empty-plate"/></button>
                 </div>
                 <div>

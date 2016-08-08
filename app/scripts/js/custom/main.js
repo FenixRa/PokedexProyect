@@ -23,6 +23,12 @@ Poke.config(['$routeProvider', function ($routeProvider) {
         menuAction: true
 
     }).
+    when('/ListCaught',{
+        templateUrl: 'templates/lists.html',
+        controller: 'battleController',
+        title: 'Caught pokemon',
+        menuAction: true
+    }).
     otherwise({
         redirectTo: '/MainMenu'
 
@@ -39,6 +45,7 @@ Poke.factory('DownloadData',function ($http,$q,$localStorage) {
         if(!$localStorage.isDataSaved){
             for(var i =1; i<=5; i++){
                 var caught= false;
+                var battle= false;
                 var pokeList = $http.get('http://pokeapi.co/api/v2/pokemon/'+i+'',{cache: false});
                 var pokeLocation = $http.get('http://pokeapi.co/api/v2/pokemon/'+i+'/encounters',{cache: false});
                 var pokeDetail = $http.get('http://pokeapi.co/api/v2/pokemon-species/'+i+'',{cache:false});
@@ -56,7 +63,8 @@ Poke.factory('DownloadData',function ($http,$q,$localStorage) {
             height: response[0].data.height,
             abilities: response[0].data.abilities,
             locations: response[0].data.location_area_encounters,
-            caught: caught});
+            caught: caught,
+            battle: battle});
 
         detailList.push(response[1].data);
         locationList.push(response[2].data);
@@ -96,13 +104,12 @@ Poke.controller('MainMenuController', function ($scope,$localStorage,$rootScope,
     if(!$scope.$storage){
         $scope.$storage = $localStorage;
         $scope.$storage = $localStorage.$default({
-            isDataSaved: false,
             caughtList: {},
             battleList: {},
         });
     }
     //$localStorage.$reset();
-    if($scope.$storage.isDataSaved){
+    if (typeof $scope.$storage.main !== 'undefined') {
         Notification.success({message: 'Welcome', positionY: 'bottom', positionX: 'center'});
         bindToView();
 
@@ -127,7 +134,6 @@ Poke.controller('MainMenuController', function ($scope,$localStorage,$rootScope,
         $scope.detailList = $scope.$storage.detail;
         $scope.locationList = $scope.$storage.location;
         $scope.evolutionList = $scope.$storage.evolution;
-        $scope.$storage.isDataSaved = true;
 
     }
 
@@ -135,11 +141,11 @@ Poke.controller('MainMenuController', function ($scope,$localStorage,$rootScope,
         $scope.order = !$scope.order;
     }
 
-    $scope.addBattleBox = function(item){
-        SharedProperties.setBattle(item);
+    $scope.addBattleBox = function(item,index){
+        SharedProperties.setBattle(item,index);
     }
-    $scope.addCaught = function(item){
-        SharedProperties.setCaught(item);
+    $scope.addCaught = function(item,index){
+        SharedProperties.setCaught(item,index);
 
     }
     $scope.selectedPokemon = function (item) {
@@ -156,6 +162,7 @@ Poke.controller('MainMenuController', function ($scope,$localStorage,$rootScope,
         SharedProperties.setEvolution($scope.evolutionList[item]);
     }
 
+
 });
 
 Poke.controller('DescriptionController',function ($scope, $http,SharedProperties) {
@@ -166,13 +173,12 @@ Poke.controller('DescriptionController',function ($scope, $http,SharedProperties
     $scope.evolutions = SharedProperties.getEvolution();
 
     $scope.addCaught = function(item){
-        $scope.$localStorage.caughtList.push({pokemon:item});
-        SharedProperties.setCaught($scope.$localStorage.caughtList);
+        SharedProperties.setCaught(item);
 
     }
     $scope.addBattleBox = function(item) {
-        $scope.$localStorage.battleList.push({pokemon: item});
-        SharedProperties.setBattle($scope.$localStorage.battleList);
+        SharedProperties.setBattle(item);
+
     }
 
 });
@@ -200,6 +206,10 @@ Poke.service('SharedProperties',function ($localStorage) {
     var listBattleBox = [];
     var isCaught = false;
     var menuIcon = true;
+    function remove(index) {
+        $localStorage.caughtList.splice(index,1)
+        listCaught.splice(index,1);
+    }
     return{
         setObject: function (item) {
             objectPoke = item;
@@ -231,20 +241,40 @@ Poke.service('SharedProperties',function ($localStorage) {
         getEvolution: function () {
             return evolutionPoke;
         },
-        setCaught: function (item) {
-            item.caught = true;
+        setCaught: function (item,index) {
             listCaught.push(item);
+            if (typeof $localStorage.caughtList !== 'undefined') {
+                $localStorage.caughtList = listCaught;
+            }else{
+                $localStorage.caughtList.push(item);
+            }
+
+            if(!item.caught){
+                item.caught = true;
+
+            }else{
+                item.caught = false;
+                remove(index)
+            }
+
+
         },
         getCaught: function () {
 
-            return listCaught;
+            return $localStorage.caughtList;
         },
-        setBattle: function (item) {
 
-            listBattleBox.push(item);
+        setBattle: function (item,index) {
+            if (typeof $localStorage.battleList !== 'undefined') {
+                $localStorage.battleList.push(item);
+            }else{
+                listBattleBox.push(item);
+                $localStorage.battleList = listBattleBox;
+            }
+
         },
         getBattle: function () {
-            return listBattleBox;
+            return $localStorage.battleList;
 
         },
         getType: function () {
