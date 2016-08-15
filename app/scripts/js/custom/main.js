@@ -43,7 +43,7 @@ Poke.factory('DownloadData',function ($http,$q,$localStorage) {
     var evolutionList =[];
     var downloadData =[];
         if(!$localStorage.isDataSaved){
-            for(var i =1; i<=5; i++){
+            for(var i =1; i<=50; i++){
                 var caught= false;
                 var battle= false;
                 var pokeList = $http.get('http://pokeapi.co/api/v2/pokemon/'+i+'',{cache: false});
